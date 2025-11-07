@@ -27,7 +27,7 @@
   </div>
 
   <footer>
-    <p><a href="data2.html" class="link-button">他の人の時間を見る</a></p>
+    <p><a href="data.html" class="link-button">他の人の時間を見る</a></p>
   </footer>
 
 <script>
@@ -50,7 +50,7 @@ document.getElementById("registerBtn").addEventListener("click", () => {
   people.push({ name, time });
   localStorage.setItem("peopleData", JSON.stringify(people));
   alert("登録が完了しました。");
-  window.location.href = "clock2.html?name=" + encodeURIComponent(name);
+  window.location.href = "clock.html?name=" + encodeURIComponent(name);
 });
 
 document.getElementById("searchBtn").addEventListener("click", () => {
@@ -64,7 +64,7 @@ document.getElementById("searchBtn").addEventListener("click", () => {
   const person = people.find(p => p.name === searchName);
 
   if (person) {
-    window.location.href = "clock2.html?name=" + encodeURIComponent(searchName);
+    window.location.href = "clock.html?name=" + encodeURIComponent(searchName);
   } else {
     alert("その名前は登録されていません。");
   }

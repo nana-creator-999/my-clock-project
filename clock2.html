@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>あなたの時間</title>
+<link rel="stylesheet" href="style2.css">
+<style>
+#clock {
+  font-size: 2.6rem;
+  font-weight: 500;
+  margin-top: 40px;
+  letter-spacing: 0.1em;
+}
+</style>
+</head>
+<body>
+  <h1>あなたの時間</h1>
+  <p class="note">あなたの生まれた時間を0:00とした時の、<br>あなたが今生きている時間です。</p>
+
+  <div id="clock">--:--</div>
+
+  <footer>
+    <p><a href="index2.html" class="link-button">戻る</a></p>
+  </footer>
+
+<script>
+function getParam(name) {
+  return new URLSearchParams(window.location.search).get(name);
+}
+
+function loadClock() {
+  const name = getParam("name");
+  const people = JSON.parse(localStorage.getItem("peopleData") || "[]");
+  const person = people.find(p => p.name === name);
+  const clockElem = document.getElementById("clock");
+
+  if (!person) {
+    clockElem.textContent = "データが見つかりません。";
+    return;
+  }
+
+  function updateClock() {
+    const [bh, bm] = person.time.split(":").map(Number);
+    const now = new Date();
+    const birth = new Date();
+    birth.setHours(bh, bm, 0, 0);
+    if (now < birth) birth.setDate(birth.getDate() - 1);
+
+    const diffMs = now - birth;
+    const diffH = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffM = Math.floor((diffMs / (1000 * 60)) % 60);
+    const modH = diffH % 24;
+
+    clockElem.textContent = `${String(modH).padStart(2, "0")}:${String(diffM).padStart(2, "0")}`;
+  }
+
+  updateClock();
+  setInterval(updateClock, 10000);
+}
+
+loadClock();
+</script>
+</body>
+</html>

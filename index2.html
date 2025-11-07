@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>あなたの時間を登録する</title>
+<link rel="stylesheet" href="style2.css">
+</head>
+<body>
+  <h1>あなたの時間を登録する</h1>
+
+  <p class="note">自分の生まれた時間を入力してください。</p>
+
+  <div>
+    <input type="text" id="name" placeholder="お名前">
+    <input type="time" id="time">
+    <button id="registerBtn">確定</button>
+  </div>
+
+  <hr style="margin:30px 0; border:none; border-top:1px solid #ccc; width:80%;">
+
+  <h2>登録済みの時間を確認する</h2>
+  <p class="note">あなたの名前を入力して確認できます。</p>
+
+  <div>
+    <input type="text" id="searchName" placeholder="お名前を検索">
+    <button id="searchBtn">検索</button>
+  </div>
+
+  <footer>
+    <p><a href="data2.html" class="link-button">他の人の時間を見る</a></p>
+  </footer>
+
+<script>
+document.getElementById("registerBtn").addEventListener("click", () => {
+  const name = document.getElementById("name").value.trim();
+  const time = document.getElementById("time").value;
+
+  if (!name || !time) {
+    alert("名前と生まれた時間を入力してください。");
+    return;
+  }
+
+  const people = JSON.parse(localStorage.getItem("peopleData") || "[]");
+
+  if (people.some(p => p.name === name)) {
+    alert("すでにこの名前は登録されています。");
+    return;
+  }
+
+  people.push({ name, time });
+  localStorage.setItem("peopleData", JSON.stringify(people));
+  alert("登録が完了しました。");
+  window.location.href = "clock2.html?name=" + encodeURIComponent(name);
+});
+
+document.getElementById("searchBtn").addEventListener("click", () => {
+  const searchName = document.getElementById("searchName").value.trim();
+  if (!searchName) {
+    alert("検索する名前を入力してください。");
+    return;
+  }
+
+  const people = JSON.parse(localStorage.getItem("peopleData") || "[]");
+  const person = people.find(p => p.name === searchName);
+
+  if (person) {
+    window.location.href = "clock2.html?name=" + encodeURIComponent(searchName);
+  } else {
+    alert("その名前は登録されていません。");
+  }
+});
+</script>
+</body>
+</html>
